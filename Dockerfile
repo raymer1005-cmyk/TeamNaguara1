@@ -4,10 +4,10 @@
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /app
 
-# Copia todos los archivos del proyecto
+# Copia todos los archivos de tu proyecto
 COPY . .
 
-# Compila y publica la app en la carpeta "out"
+# Publica la app en la carpeta "out"
 RUN dotnet publish TeamNaGuara.csproj -c Release -o out
 
 # =========================
@@ -16,7 +16,7 @@ RUN dotnet publish TeamNaGuara.csproj -c Release -o out
 FROM mcr.microsoft.com/dotnet/aspnet:9.0
 WORKDIR /app
 
-# Copia la app compilada desde la etapa de build
+# Copia la app compilada desde el stage build
 COPY --from=build /app/out .
 
 # Comando para ejecutar la app
