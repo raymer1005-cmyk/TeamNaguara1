@@ -1,17 +1,25 @@
-﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Registrar servicios necesarios
+// 1️⃣ Registrar servicios
 builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
-// Construir la app
 var app = builder.Build();
 
-// Mapear rutas
-app.MapControllers(); // Mapea todos los controladores
-app.MapGet("/", () => "Hello World!"); // Ruta de prueba
+// 2️⃣ Configurar middleware
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
-// Ejecutar la aplicación
+app.UseHttpsRedirection();
+app.MapControllers();
+
+// 3️⃣ Ejecutar la app
 app.Run();
